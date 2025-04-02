@@ -7,58 +7,47 @@ const kopaytrish = document.getElementById('kopaytrish');
 const clear = document.getElementById('clear');
 const avg = document.getElementById('avg');
 
-let arr = [];
-const addNumber = () => {
-    let neww = +input.value.trim()
-    if (!neww) {
-        alert("Maydon bo'sh bo'lmasligi kerak")
-    }
-    else if (neww) {
-        arr.push(neww)
-    }
-    input.value = ''
-}
-window.addEventListener('keydown', (event) => {
-    if (event.key == 'Enter') {
-        addNumber()
-    }
-})
-add.addEventListener('click', () => {
-    addNumber()
-})
+const array = document.getElementById('array')
 
-let sum = 0;
-res.textContent = sum
+let arr = [];
+
+const addNumber = () => {
+    let newNumber = parseFloat(input.value.trim());
+    if (!newNumber && newNumber !== 0) {
+        alert("Maydon bo'sh bo'lmasligi kerak");
+    } else {
+        arr.push(newNumber);
+        input.value = '';
+    }
+    array.textContent = arr
+};
+
+document.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') addNumber();
+});
+
+add.addEventListener('click', addNumber);
+
+const calculateSum = () => arr.reduce((acc, num) => acc + num, 0);
+const calculateProduct = () => arr.reduce((acc, num) => acc * num, 1);
+const calculateAverage = () => (arr.length ? calculateSum() / arr.length : 0);
 
 result.addEventListener('click', () => {
-    for (let i in arr) {
-        sum += +arr[i]
-    }
-    res.textContent = sum
+    res.textContent = calculateSum();
     arr = [];
-    input.value = ''
+});
 
-})
 kopaytrish.addEventListener('click', () => {
-    let sum = 1
-    for (let i in arr) {
-        sum *= +arr[i]
-        console.log(arr[i])
-    }
-    res.textContent = sum
-    console.log(arr)
-    input.value = ''
-})
-clear.addEventListener('click', () => {
-    res.textContent = 0
-    window.location.reload();
-})
+    res.textContent = calculateProduct();
+});
 
 avg.addEventListener('click', () => {
-    for (let i in arr) {
-        sum += +arr[i]
-    }
-    let avgg = sum / arr.length
-    res.textContent = avgg
-    input.value = ''
-})
+    res.textContent = calculateAverage();
+});
+
+clear.addEventListener('click', () => {
+    res.textContent = 0;
+    arr = [];
+    input.value = '';
+    array.textContent = ''
+});
